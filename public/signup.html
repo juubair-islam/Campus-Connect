@@ -1,63 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Campus Connect | Signup</title>
-  <link rel="stylesheet" href="css/styles.css" />
-  <link rel="stylesheet" href="css/form.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Campus Connect - Signup</title>
+  <link rel="stylesheet" href="css/signup.css">
 </head>
 <body>
   <header class="header">
-    <div class="logo">🏫 Campus Connect</div>
-    <nav class="nav">
-      <a href="login.html" class="btn">Login</a>
-      <a href="signup.html" class="btn">Signup</a>
-      <a href="dashboard/lostfound.html" class="btn report">Report Lost & Found</a>
-    </nav>
+    <a href="index.html" class="logo-title">
+      <img src="images/logo.png" alt="Campus Connect Logo" class="logo" />
+
+      <div class="header-text">
+        <h1>Campus Connect</h1>
+        <p class="tagline">Bridge to Your IUB Community</p>
+      </div>
+    </a>
+    <a href="index.html" class="back-button">⬅ Back</a>
   </header>
 
-  <main class="form-page">
-    <div class="form-container">
-      <h2>Create Your Account</h2>
-      <form id="signupForm">
-        <div class="form-group"><label>Name</label><input type="text" required /></div>
-        <div class="form-group"><label>IUB ID *</label><input type="text" required /></div>
+  <main>
+    <form id="signupForm">
+      <h2>Signup</h2>
+      <p class="connect-tag">🔗 Connect with your campus today!</p>
+
+      <!-- Role selection -->
+      <div class="form-group role-select">
+        <label class="role-option"><input type="radio" name="role" value="Student" required> Student </label>
+        <label class="role-option"><input type="radio" name="role" value="Alumni" required> Alumni</label>
+       <!-- <label class="role-option"><input type="radio" name="role" value="Faculty/Administrative Officer" required> Faculty/Administrative Officer</label>-->
+      </div>
+
+      <!-- Student & Alumni Fields -->
+      <div id="studentFields">
         <div class="form-group">
-          <label>Department *</label>
-          <select required>
+          <input type="text" id="name" placeholder="Full Name" required>
+          <input type="text" id="iubId" placeholder="IUB ID" required>
+        </div>
+
+        <div class="form-group">
+          <select id="department" required>
+            <option value="" disabled selected>Department</option>
+            <option value="CSE">Computer Science</option>
+            <option value="EEE">Electrical Engineering</option>
+            <option value="BBA">Business Administration</option>
+          </select>
+
+          <select id="major" required>
+            <option value="" disabled selected>Major</option>
+            <option value="AI">Artificial Intelligence</option>
+            <option value="Finance">Finance</option>
+            <option value="Marketing">Marketing</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <input type="tel" id="contact" placeholder="Contact Number" required>
+          <input type="email" id="email" placeholder="IUB Email (e.g., name@iub.edu.bd)" required>
+        </div>
+
+        <!-- Password Fields -->
+        <div class="form-group double-field">
+          <input type="password" id="password" placeholder="Password" required>
+          <input type="password" id="confirmPassword" placeholder="Reconfirm Password" required>
+        </div>
+        <span id="passwordMatch" class="validation-msg"></span>
+
+        <!-- Alumni-only fields -->
+        <div id="alumniFields" style="display: none;">
+          <h4 class="alumni-heading">Alumni Information</h4>
+          <div class="form-group">
+            <input type="text" id="residence" placeholder="Current Residence (Country, District)">
+            <input type="text" id="company" placeholder="Company/Organization Name">
+          </div>
+          <div class="form-group">
+            <input type="text" id="designation" placeholder="Designation">
+            <input type="text" id="companyAddress" placeholder="Company Address">
+          </div>
+          <div class="form-group">
+            <input type="text" id="gradYear" placeholder="Graduation Year (e.g. 2024)">
+          </div>
+        </div>
+      </div>
+
+      <!-- Faculty/Admin Fields 
+      <div id="facultyFields" style="display: none;">
+        <h4 class="alumni-heading">Faculty / Administrative Officer Information</h4>
+        <div class="form-group">
+          <input type="text" id="facultyName" placeholder="Full Name" />
+          <input type="text" id="employeeId" placeholder="Employee ID" />
+        </div>
+        <div class="form-group">
+          <select id="facultyDepartment">
             <option value="">Select Department</option>
-            <option>Business</option>
-            <option>Engineering & Computer Science</option>
-            <option>Environmental Science and Management</option>
-            <option>Social Sciences and Arts</option>
-            <option>Life Science</option>
-            <option>Law</option>
-            <option>Pharmacy</option>
+            <option value="Registrar">Registrar Office</option>
+            <option value="Finance">Finance</option>
+            <option value="HR">Human Resources</option>
+            <option value="Library">Library</option>
+            <option value="IT">IT Department</option>
+            <option value="Academic">Academic Affairs</option>
           </select>
+          <input type="text" id="facultyContact" placeholder="Contact Number" />
         </div>
-        <div class="form-group"><label>Major *</label><input type="text" required /></div>
-        <div class="form-group"><label>Minor</label><input type="text" /></div>
-        <div class="form-group"><label>Contact Number</label><input type="tel" /></div>
-        <div class="form-group"><label>Contact Email *</label><input type="email" required pattern=".+@iub\.edu\.bd" title="Must be a valid @iub.edu.bd email" /></div>
-        <div class="form-group"><label>Password *</label><input type="password" required /></div>
         <div class="form-group">
-          <label>User Type *</label>
-          <select required>
-            <option value="">Select Type</option>
-            <option value="student">Student</option>
-            <option value="alumni">Alumni</option>
-            <option value="admin">Admin</option>
-          </select>
+          <input type="email" id="facultyEmail" placeholder="IUB Email (e.g. user@iub.edu.bd)" />
         </div>
-        <button type="submit">Signup</button>
-      </form>
-    </div>
+        <div class="form-group double-field">
+          <input type="password" id="facultypassword" placeholder="Password" required>
+          <input type="password" id="facultyconfirmPassword" placeholder="Reconfirm Password" required>
+        </div>
+        <span id="facultypasswordMatch" class="validation-msg"></span>
+      </div>-->
+
+
+
+      <button type="submit">Sign Up</button>
+      <div id="successMessage" class="success-msg"></div>
+    </form>
   </main>
 
   <footer class="footer">
     <p>&copy; 2025 Campus Connect | Independent University, Bangladesh</p>
   </footer>
+
+  <!-- ✅ Link external JS -->
+<!-- Make sure your form has id="signupForm" and the other input elements use the correct IDs -->
+
+
+<div id="loadingOverlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); color:white; align-items:center; justify-content:center; z-index:999;">
+  <div>⏳ Signing you up...Please Wait</div>
+</div>
+
+<script type="module" src="js/dashboard/signup.js"></script>
+
 </body>
 </html>
