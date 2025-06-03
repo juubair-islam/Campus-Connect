@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campus Connect | Signup</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/form.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="header">
+    <div class="logo">🏫 Campus Connect</div>
+    <nav class="nav">
+      <a href="login.html" class="btn">Login</a>
+      <a href="signup.html" class="btn">Signup</a>
+      <a href="dashboard/lostfound.html" class="btn report">Report Lost & Found</a>
+    </nav>
+  </header>
+
+  <main class="form-page">
+    <div class="form-container">
+      <h2>Create Your Account</h2>
+      <form id="signupForm">
+        <div class="form-group"><label>Name</label><input type="text" required /></div>
+        <div class="form-group"><label>IUB ID *</label><input type="text" required /></div>
+        <div class="form-group">
+          <label>Department *</label>
+          <select required>
+            <option value="">Select Department</option>
+            <option>Business</option>
+            <option>Engineering & Computer Science</option>
+            <option>Environmental Science and Management</option>
+            <option>Social Sciences and Arts</option>
+            <option>Life Science</option>
+            <option>Law</option>
+            <option>Pharmacy</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Major *</label><input type="text" required /></div>
+        <div class="form-group"><label>Minor</label><input type="text" /></div>
+        <div class="form-group"><label>Contact Number</label><input type="tel" /></div>
+        <div class="form-group"><label>Contact Email *</label><input type="email" required pattern=".+@iub\.edu\.bd" title="Must be a valid @iub.edu.bd email" /></div>
+        <div class="form-group"><label>Password *</label><input type="password" required /></div>
+        <div class="form-group">
+          <label>User Type *</label>
+          <select required>
+            <option value="">Select Type</option>
+            <option value="student">Student</option>
+            <option value="alumni">Alumni</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <button type="submit">Signup</button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 Campus Connect | Independent University, Bangladesh</p>
+  </footer>
+</body>
+</html>

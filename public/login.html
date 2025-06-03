@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Campus Connect</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    .login-container {
+      max-width: 420px;
+      margin: 4rem auto;
+      background: white;
+      padding: 2.5rem 2rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    .login-container h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+      color: #004c97;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.65rem;
+      border: 1.5px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    input:focus {
+      border-color: #00b7ff;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 183, 255, 0.3);
+    }
+
+    .error-message {
+      color: #d93025;
+      font-size: 0.9rem;
+      margin-top: 0.3rem;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background-color: #004c97;
+      color: white;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    .btn-submit:hover {
+      background-color: #0073e6;
+    }
+
+    @media (max-width: 500px) {
+      .login-container {
+        margin: 2rem 1rem;
+        padding: 2rem 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">🏫 Campus Connect</div>
+    <nav class="nav">
+      <a href="login.html" class="btn">Login</a>
+      <a href="signup.html" class="btn">Signup</a>
+      <a href="public/dashboard/lostfound.html" class="btn report">Report Lost & Found</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="login-container">
+      <h2>Login to Campus Connect</h2>
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="loginEmail">IUB Email</label>
+          <input
+            type="email"
+            id="loginEmail"
+            name="email"
+            placeholder="you@iub.edu.bd"
+            required
+            pattern="^[a-zA-Z0-9._%+-]+@iub\.edu\.bd$"
+          />
+          <div class="error-message" id="emailError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input
+            type="password"
+            id="loginPassword"
+            name="password"
+            placeholder="Enter password"
+            required
+            minlength="6"
+          />
+        </div>
+
+        <button type="submit" class="btn-submit">Login</button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 Campus Connect | Independent University, Bangladesh</p>
+  </footer>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('loginEmail');
+    const emailError = document.getElementById('emailError');
+
+    loginForm.addEventListener('submit', function (e) {
+      emailError.textContent = '';
+      if (!emailInput.validity.valid) {
+        e.preventDefault();
+        if (emailInput.validity.valueMissing) {
+          emailError.textContent = 'Email is required.';
+        } else if (emailInput.validity.patternMismatch) {
+          emailError.textContent = 'Email must end with @iub.edu.bd';
+        }
+        emailInput.focus();
+      }
+    });
+  </script>
+</body>
+</html>

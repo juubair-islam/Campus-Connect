@@ -1,0 +1,28 @@
+Campus-Connect/
+│
+├── public/                        ← Firebase Hosting serves from here
+│   ├── index.html                 ← Home page with logo + Login/Signup
+│   ├── login.html                 ← Login page
+│   ├── signup.html                ← Signup page with role & subrole selection
+│   ├── dashboard/
+│   │   ├── student-tutor.html     ← Tutor Dashboard
+│   │   ├── student-learner.html   ← Learner Dashboard
+│   │   ├── alumni.html            ← Alumni Dashboard
+│   │   └── admin.html             ← Admin Dashboard
+│   │
+│   ├── css/
+│   │   └── styles.css             ← Common styling for all pages
+│   │
+│   └── js/
+│       ├── auth.js                ← Firebase Auth logic (login/signup/session)
+│       ├── role-check.js          ← Handles redirecting user to proper dashboard
+│       ├── dashboard/             ← Dashboard-specific logic
+│       │   ├── tutor.js
+│       │   ├── learner.js
+│       │   ├── alumni.js
+│       │   └── admin.js
+│
+├── firebase.json                 ← Firebase Hosting configuration
+├── .firebaserc                   ← Firebase project reference
+├── .gitignore                    ← Ignore node_modules, etc.
+└── README.md                     ← Project documentation
