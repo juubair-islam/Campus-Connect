@@ -1,62 +1,163 @@
-// Firebase SDK imports
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// Your Firebase config
+// --- Firebase config ---
 const firebaseConfig = {
   apiKey: "AIzaSyAihSpLsBqzXZ0RwuD13Txh_qBxEil8kLY",
   authDomain: "campus-connect-portal.firebaseapp.com",
   projectId: "campus-connect-portal",
-  storageBucket: "campus-connect-portal.firebasestorage.app",
+  storageBucket: "campus-connect-portal.appspot.com",
   messagingSenderId: "790415624874",
   appId: "1:790415624874:web:b5d9adb44c880567631ed3",
   measurementId: "G-FPCS9NSCFD"
 };
 
-// Initialize Firebase
+// --- Initialize Firebase ---
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Select DOM elements
-const studentName = document.getElementById("student-name");
-const studentID = document.getElementById("student-id");
-const studentDept = document.getElementById("student-department");
-const studentMajor = document.getElementById("student-major");
+// --- DOM Elements ---
+const nameSpan = document.getElementById("studentName");
+const idSpan = document.getElementById("studentId");
+const deptSpan = document.getElementById("studentDept");
+const majorSpan = document.getElementById("studentMajor");
+const minorSpan = document.getElementById("studentMinor");
+const nameHeader = document.getElementById("studentNameHeader");
+const logoutBtn = document.getElementById("logoutBtn");
 
-// Check user auth status
+const lostFoundList = document.getElementById("lostFoundList");
+const tutorRequestList = document.getElementById("tutorRequestList");
+const notificationBox = document.getElementById("notificationBox");
+
+// --- On Auth State ---
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     const uid = user.uid;
 
     try {
-      const docRef = doc(db, "students", uid); // assumes your collection is "students"
-      const docSnap = await getDoc(docRef);
+      const studentRef = doc(db, "students", uid);
+      const studentSnap = await getDoc(studentRef);
 
-      if (docSnap.exists()) {
-        const data = docSnap.data();
+      if (studentSnap.exists()) {
+        const data = studentSnap.data();
 
-        studentName.textContent = data.name || "N/A";
-        studentID.textContent = data.iubId || "N/A";
-        studentDept.textContent = data.department || "N/A";
-        studentMajor.textContent = data.major || "N/A";
+        // Update UI with student details
+        nameSpan.textContent = data.name || "Unknown";
+        idSpan.textContent = data.iubId || "N/A";
+        deptSpan.textContent = data.department || "N/A";
+        majorSpan.textContent = data.major || "N/A";
+        minorSpan.textContent = data.minor || "None";
+        nameHeader.textContent = data.name || "Student";
+
+        // Fetch Lost & Found items
+        fetchLostFoundItems();
+
+        // Fetch Tutor Requests for this student
+        fetchTutorRequests(uid);
+
+        // Notifications
+        showNotifications(data.name || "Student");
+
       } else {
-        alert("Student data not found.");
+        alert("Student record not found in Firestore.");
       }
+
     } catch (error) {
-      console.error("Error getting document:", error);
-      alert("Failed to fetch data.");
+      console.error("Error fetching student data:", error);
     }
+
   } else {
-    // Redirect to login if not authenticated
+    // No user logged in
     window.location.href = "/login.html";
   }
 });
 
-// Logout
-window.logout = function () {
+// --- Logout Function ---
+logoutBtn.addEventListener("click", () => {
   signOut(auth).then(() => {
-    window.location.href = "/login.html";
+    window.location.href = "../login.html";
   });
-};
+});
+
+// --- Fetch Verified Lost & Found Items ---
+async function fetchLostFoundItems() {
+  lostFoundList.innerHTML = "<p>Loading lost items...</p>";
+
+  const q = query(collection(db, "lostFound"), where("status", "==", "Verified"));
+  const querySnapshot = await getDocs(q);
+
+  if (querySnapshot.empty) {
+    lostFoundList.innerHTML = "<p>No verified lost items currently.</p>";
+    return;
+  }
+
+  lostFoundList.innerHTML = "";
+  querySnapshot.forEach(doc => {
+    const item = doc.data();
+    const div = document.createElement("div");
+    div.className = "item-card";
+    div.innerHTML = `
+      <h4>${item.title || "Untitled"}</h4>
+      <p><strong>Date:</strong> ${item.date || "N/A"}</p>
+      <p><strong>Location:</strong> ${item.location || "Unknown"}</p>
+      <p><strong>Description:</strong> ${item.description || ""}</p>
+    `;
+    lostFoundList.appendChild(div);
+  });
+}
+
+// --- Fetch Tutor Requests Sent to This Student ---
+async function fetchTutorRequests(studentUID) {
+  tutorRequestList.innerHTML = "<p>Loading tutor requests...</p>";
+
+  const q = query(
+    collection(db, "tutorRequests"),
+    where("toStudentId", "==", studentUID)
+  );
+  const querySnapshot = await getDocs(q);
+
+  if (querySnapshot.empty) {
+    tutorRequestList.innerHTML = "<p>No tutor requests sent to you yet.</p>";
+    return;
+  }
+
+  tutorRequestList.innerHTML = "";
+  querySnapshot.forEach(doc => {
+    const req = doc.data();
+    const div = document.createElement("div");
+    div.className = "request-card";
+    div.innerHTML = `
+      <p><strong>From:</strong> ${req.fromName || "Unknown"}</p>
+      <p><strong>Course:</strong> ${req.course || "N/A"}</p>
+      <p><strong>Message:</strong> ${req.message || ""}</p>
+      <p><strong>Status:</strong> ${req.status || "Pending"}</p>
+    `;
+    tutorRequestList.appendChild(div);
+  });
+}
+
+// --- Notifications (Simple Mock) ---
+function showNotifications(name) {
+  const today = new Date().toLocaleDateString();
+  notificationBox.innerHTML = `
+    <div class="notification-card">
+      <p>👋 Hello ${name}, welcome back!</p>
+      <p>📅 Today is ${today}</p>
+      <p>🎉 No major campus events today. Stay tuned!</p>
+    </div>
+  `;
+}

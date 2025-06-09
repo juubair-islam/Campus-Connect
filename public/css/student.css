@@ -1,41 +1,222 @@
 body {
-  font-family: "Segoe UI", sans-serif;
-  background: #e8f0fe;
   margin: 0;
-  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4fbfe;
+  color: #1e3a5f;
 }
 
-.dashboard {
-  background: white;
-  max-width: 600px;
+/* Header */
+.dashboard-header {
+  background-color: #d6f0fc;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #b6e0f7;
+  animation: slideInTop 0.8s ease;
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo {
+  height: 50px;
+}
+
+.header-text h1 {
+  margin: 0;
+  color: #0077b6;
+  font-size: 1.8rem;
+}
+
+.header-text .tagline {
+  font-size: 0.9rem;
+  color: #4a6d8c;
+}
+
+.logout-button {
+  background: #2563eb;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+  transition: all 0.3s ease;
+}
+
+.logout-button:hover {
+  background: #1e40af;
+  box-shadow: 0 6px 14px rgba(30, 64, 175, 0.5);
+}
+
+/* Main */
+.dashboard-main {
+  padding: 40px 20px;
+  max-width: 1100px;
   margin: auto;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease;
+}
+
+.welcome-text {
   text-align: center;
+  font-size: 1.8rem;
+  color: #0077b6;
+  margin-bottom: 40px;
 }
 
-.dashboard h1 {
-  font-size: 28px;
-  color: #003865;
+/* Dashboard Cards */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
 }
 
-.dashboard p {
-  font-size: 18px;
-  color: #333;
+.dashboard-card {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 25px 20px;
+  box-shadow: 0 8px 20px rgba(0, 124, 199, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: slideFadeIn 0.7s ease forwards;
 }
 
-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #005eb8;
+.dashboard-card h3 {
+  color: #005b9f;
+  margin-bottom: 12px;
+}
+
+.dashboard-card p {
+  font-size: 0.95rem;
+  color: #3d6e90;
+  margin-bottom: 20px;
+}
+
+.card-button {
+  display: inline-block;
+  padding: 10px 16px;
+  background: #007cc7;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.card-button:hover {
+  background: #005f96;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 124, 199, 0.2);
+}
+
+/* Card Colors */
+.tutor-card { border-left: 6px solid #3b82f6; }
+.learner-card { border-left: 6px solid #10b981; }
+.lostfound-card { border-left: 6px solid #f59e0b; }
+
+/* Footer */
+.dashboard-footer {
+  text-align: center;
+  padding: 1.2rem;
+  background: #0f172a;
+  color: #e2e8f0;
+  margin-top: 60px;
+}
+
+/* Animations */
+@keyframes slideInTop {
+  0% { transform: translateY(-100px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideFadeIn {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .header-text h1 {
+    font-size: 1.2rem;
+  }
+  .logout-button {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+  }
+  .welcome-text {
+    font-size: 1.3rem;
+  }
+}
+
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+#logoutBtn {
+  background-color: #1d4ed8;
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
+  padding: 8px 16px;
+  border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+#logoutBtn:hover {
+  background-color: #2563eb;
 }
 
-button:hover {
-  background-color: #003865;
+.notification-area {
+  background-color: #fefce8;
+  border-left: 4px solid #facc15;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+}
+.notification {
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+.notification strong {
+  color: #b45309;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-weight: bold;
+}
+
+#logoutBtn {
+  background-color: #d9534f;
+  color: white;
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#logoutBtn:hover {
+  background-color: #c9302c;
 }
