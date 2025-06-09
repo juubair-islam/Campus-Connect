@@ -2,31 +2,92 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Campus Connect</title>
-  <link rel="stylesheet" href="css/styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Campus Connect - Home</title>
+  <link rel="stylesheet" href="css/index.css" />
 </head>
 <body>
   <header class="header">
-    <div class="logo">🏫 Campus Connect</div>
-    <nav class="nav">
-      <a href="login.html" class="btn">Login</a>
-      <a href="signup.html" class="btn">Signup</a>
-      <a href="lostfound.html" class="btn report">Report Lost & Found</a>
+    <a href="index.html" class="logo-title">
+      <div class="header-text">
+        <h1>Campus Connect</h1>
+        <p class="tagline">Bridge to Your IUB Community</p>
+      </div>
+    </a>
+    <nav class="nav-buttons">
+      <a href="login.html" class="btn login-btn">Login</a>
+      <a href="signup.html" class="btn signup-btn">Signup</a>
     </nav>
   </header>
 
-  <main class="hero">
-    <section class="hero-content">
-      <h1>Connecting the Campus, One Portal at a Time</h1>
+  <main class="main-content">
+
+    <section class="intro">
+      <img src="images/logo.png" alt="Campus Connect Logo" class="intro-logo" />
+      <h2>Welcome to Campus Connect</h2>
       <p>
-        Campus Connect is a centralized platform designed exclusively for the students, alumni, and administrators of
-        Independent University, Bangladesh (IUB). It combines academic assistance, peer tutoring, skill exchange, and
-        campus-wide lost & found functionality — all under one unified dashboard.
+        Campus Connect is your gateway to the Independent University, Bangladesh community — 
+        bridging students, faculty, alumni, and staff with the tools and resources they need 
+        to succeed and collaborate.
       </p>
-      <a href="signup.html" class="primary-btn">Get Started</a>
     </section>
+
+    <section id="todays-events">
+      <h2>Today's Events at IUB</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Event Name</th>
+            <th>Time</th>
+            <th>Location</th>
+            <th>Hosted By</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2025-06-04</td>
+            <td>Annual Tech Symposium</td>
+            <td>10:00 AM - 4:00 PM</td>
+            <td>Auditorium</td>
+            <td>Department of CSE</td>
+          </tr>
+          <tr>
+            <td>2025-06-04</td>
+            <td>Career Fair</td>
+            <td>1:00 PM - 5:00 PM</td>
+            <td>Multipurpose Hall</td>
+            <td>Career Services</td>
+          </tr>
+          <tr>
+            <td>2025-06-04</td>
+            <td>Guest Lecture: AI Ethics</td>
+            <td>3:00 PM - 4:30 PM</td>
+            <td>Room 101</td>
+            <td>Faculty of EEE</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="project-about-container">
+      <section id="project-brief">
+        <h3>About the Project</h3>
+        <p>
+          Our project is designed to streamline campus event management at Independent University, Bangladesh (IUB). 
+          We aim to provide students and staff with up-to-date information on all ongoing and upcoming events across campus.
+        </p>
+      </section>
+
+      <section id="about-us">
+        <h3>About Us</h3>
+        <p>
+          We are a team of passionate students dedicated to enhancing campus life at IUB. 
+          Through technology and innovation, we strive to keep the university community informed and connected.
+        </p>
+      </section>
+    </section>
+
   </main>
 
   <footer class="footer">

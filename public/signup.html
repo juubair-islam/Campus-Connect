@@ -28,25 +28,25 @@
       <div class="form-group role-select">
         <label class="role-option"><input type="radio" name="role" value="Student" required> Student </label>
         <label class="role-option"><input type="radio" name="role" value="Alumni" required> Alumni</label>
-       <!-- <label class="role-option"><input type="radio" name="role" value="Faculty/Administrative Officer" required> Faculty/Administrative Officer</label>-->
+        <label class="role-option"><input type="radio" name="role" value="Faculty/Administrative Officer" required> Faculty/Administrative Officer</label>
       </div>
 
       <!-- Student & Alumni Fields -->
       <div id="studentFields">
         <div class="form-group">
-          <input type="text" id="name" placeholder="Full Name" required>
-          <input type="text" id="iubId" placeholder="IUB ID" required>
+          <input type="text" id="name" name="name" placeholder="Full Name" >
+          <input type="text" id="iubId" name="iubId" placeholder="IUB ID" >
         </div>
 
         <div class="form-group">
-          <select id="department" required>
+          <select id="department" >
             <option value="" disabled selected>Department</option>
             <option value="CSE">Computer Science</option>
             <option value="EEE">Electrical Engineering</option>
             <option value="BBA">Business Administration</option>
           </select>
 
-          <select id="major" required>
+          <select id="major" >
             <option value="" disabled selected>Major</option>
             <option value="AI">Artificial Intelligence</option>
             <option value="Finance">Finance</option>
@@ -55,14 +55,14 @@
         </div>
 
         <div class="form-group">
-          <input type="tel" id="contact" placeholder="Contact Number" required>
-          <input type="email" id="email" placeholder="IUB Email (e.g., name@iub.edu.bd)" required>
+          <input type="tel" id="contact" placeholder="Contact Number" >
+          <input type="email" id="email" placeholder="IUB Email (e.g., name@iub.edu.bd)" >
         </div>
 
         <!-- Password Fields -->
         <div class="form-group double-field">
-          <input type="password" id="password" placeholder="Password" required>
-          <input type="password" id="confirmPassword" placeholder="Reconfirm Password" required>
+          <input type="password" id="password" placeholder="Password" >
+          <input type="password" id="confirmPassword" placeholder="Reconfirm Password" >
         </div>
         <span id="passwordMatch" class="validation-msg"></span>
 
@@ -78,16 +78,19 @@
             <input type="text" id="companyAddress" placeholder="Company Address">
           </div>
           <div class="form-group">
-            <input type="text" id="gradYear" placeholder="Graduation Year (e.g. 2024)">
+            <input type="number" id="gradYear" name="gradYear" placeholder="Graduation Year (e.g. 2024)" min="1900" max="2099">
+
           </div>
         </div>
       </div>
 
-      <!-- Faculty/Admin Fields 
+      <!-- Faculty/Admin Fields -->
       <div id="facultyFields" style="display: none;">
         <h4 class="alumni-heading">Faculty / Administrative Officer Information</h4>
         <div class="form-group">
-          <input type="text" id="facultyName" placeholder="Full Name" />
+
+          <input type="text" id="facultyName" name="facultyName"placeholder="Full Name">
+
           <input type="text" id="employeeId" placeholder="Employee ID" />
         </div>
         <div class="form-group">
@@ -106,11 +109,11 @@
           <input type="email" id="facultyEmail" placeholder="IUB Email (e.g. user@iub.edu.bd)" />
         </div>
         <div class="form-group double-field">
-          <input type="password" id="facultypassword" placeholder="Password" required>
-          <input type="password" id="facultyconfirmPassword" placeholder="Reconfirm Password" required>
+          <input type="password" id="facultypassword" placeholder="Password" >
+          <input type="password" id="facultyconfirmPassword" placeholder="Reconfirm Password" >
         </div>
         <span id="facultypasswordMatch" class="validation-msg"></span>
-      </div>-->
+      </div>
 
 
 

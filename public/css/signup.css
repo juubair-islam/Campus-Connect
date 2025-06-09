@@ -257,16 +257,3 @@ button:hover {
   text-align: center;
 }
 
-/* Rest are same or previous styles for double-field, validation-msg, etc. */
-  .spinner {
-    width: 50px;
-    height: 50px;
-    border: 6px solid #ccc;
-    border-top-color: #3498db;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }

@@ -1,0 +1,41 @@
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: #e8f0fe;
+  margin: 0;
+  padding: 20px;
+}
+
+.dashboard {
+  background: white;
+  max-width: 600px;
+  margin: auto;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.dashboard h1 {
+  font-size: 28px;
+  color: #003865;
+}
+
+.dashboard p {
+  font-size: 18px;
+  color: #333;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #005eb8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #003865;
+}

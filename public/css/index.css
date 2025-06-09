@@ -1,0 +1,301 @@
+/* Import your existing login.css styles first or replicate essentials */
+
+/* Base styles */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f4fbfe;
+  color: #1e3a5f;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header reuse */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #e6f2fb;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #cce3f6;
+  animation: slideInTop 1s ease;
+}
+
+.logo-title {
+  display: flex;
+  text-decoration: none;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo {
+  height: 50px;
+}
+
+.header-text h1 {
+  margin: 0;
+  color: #0077b6;
+  font-size: 1.5rem;
+}
+
+.header-text .tagline {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+/* Navigation buttons in header */
+.nav-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.btn {
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 6px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Login button style */
+.login-btn {
+  background-color: #007cc7; /* IUB blue */
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 124, 199, 0.4);
+}
+
+.login-btn:hover {
+  background-color: #005f96;
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 95, 150, 0.6);
+}
+
+/* Signup button style */
+.signup-btn {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: white;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+}
+
+.signup-btn:hover {
+  background: linear-gradient(135deg, #1e40af, #2563eb);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.6);
+}
+
+/* Main content */
+.main-content {
+  flex-grow: 1;
+  max-width: 900px;
+  margin: 3rem auto;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.intro h2 {
+  font-size: 2rem;
+  color: #007cc7;
+  margin-bottom: 1rem;
+  animation: fadeIn 1s ease forwards;
+}
+
+.intro p {
+  font-size: 1.2rem;
+  color: #004e7c;
+  line-height: 1.6;
+  max-width: 650px;
+  margin: 0 auto 3rem;
+  animation: fadeIn 1.3s ease forwards;
+}
+
+.mission-vision {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  flex-wrap: wrap;
+}
+
+.mission, .vision {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 124, 199, 0.1);
+  max-width: 400px;
+  text-align: left;
+  animation: fadeIn 1.6s ease forwards;
+}
+
+.mission h3, .vision h3 {
+  color: #007cc7;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.mission p, .vision p {
+  font-size: 1rem;
+  color: #1e3a5f;
+  line-height: 1.5;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 1rem;
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+/* Animations */
+@keyframes slideInTop {
+  0% { transform: translateY(-100px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mission-vision {
+    flex-direction: column;
+    gap: 25px;
+    padding: 0 10px;
+  }
+
+  .mission, .vision {
+    max-width: 100%;
+  }
+}
+.intro-logo {
+  display: block;
+  margin: 0 auto 15px auto;
+  width: 200; /* adjust size as you like */
+  height: 150px; /* adjust size as you like */
+}
+/* Main sections styling */
+main.main-content section {
+  background: #fff;
+  padding: 25px 20px;
+  margin-bottom: 30px;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+h2 {
+  color: #004080;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+/* Flex container for Project Brief and About Us */
+#project-about-container {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+#project-brief, #about-us {
+  flex: 1 1 45%;
+  min-width: 280px;
+}
+
+h3 {
+  color: #0073e6;
+  margin-bottom: 10px;
+}
+
+/* Today's Events Section */
+#todays-events h2 {
+  color: #0073e6;
+  border-left: 6px solid #0073e6;
+  padding-left: 12px;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center; /* Center content */
+}
+
+thead tr {
+  background-color: #0073e6;
+  color: white;
+  text-align: center;
+  font-weight: 700;
+  border-radius: 6px;
+}
+
+thead th {
+  padding: 12px 15px;
+}
+
+tbody tr {
+  background: #f0f7ff;
+  box-shadow: 0 2px 5px rgba(0,115,230,0.15);
+  transition: background-color 0.3s ease;
+  border-radius: 6px;
+}
+
+tbody tr:hover {
+  background-color: #d0e5ff;
+  cursor: pointer;
+}
+
+tbody td {
+  padding: 12px 15px;
+  border: none;
+}
+
+/* Responsive table for small screens */
+@media (max-width: 700px) {
+  #project-about-container {
+    flex-direction: column;
+  }
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+  thead tr {
+    display: none;
+  }
+  tbody tr {
+    margin-bottom: 15px;
+    background: #f9faff;
+    box-shadow: none;
+    border-radius: 8px;
+    padding: 15px 10px;
+  }
+  tbody td {
+    padding-left: 50%;
+    position: relative;
+    border-bottom: 1px solid #e3e9f8;
+    text-align: left; /* Left align on mobile */
+  }
+  tbody td::before {
+    position: absolute;
+    top: 12px;
+    left: 15px;
+    width: 45%;
+    white-space: nowrap;
+    font-weight: 700;
+    color: #004080;
+  }
+  tbody td:nth-of-type(1)::before { content: "Date"; }
+  tbody td:nth-of-type(2)::before { content: "Event Name"; }
+  tbody td:nth-of-type(3)::before { content: "Time"; }
+  tbody td:nth-of-type(4)::before { content: "Location"; }
+  tbody td:nth-of-type(5)::before { content: "Hosted By"; }
+}
