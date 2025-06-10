@@ -150,13 +150,19 @@ async function loadRequestedCourses() {
   const q = query(collection(db, "tutorRequests"), where("learnerId", "==", currentUID));
   const snapshot = await getDocs(q);
 
-  if (snapshot.empty) {
-    requestedList.innerHTML = "<p>No requests sent yet.</p>";
-    return;
-  }
+  let hasVisibleRequest = false;
 
-  snapshot.forEach(docSnap => {
+  for (const docSnap of snapshot.docs) {
     const req = docSnap.data();
+
+    // Check if the associated tutor post still exists
+    const postRef = doc(db, "tutorPosts", req.postId);
+    const postSnap = await getDoc(postRef);
+    if (!postSnap.exists()) {
+      continue; // Skip if tutor post has been deleted
+    }
+
+    hasVisibleRequest = true;
 
     // Get tutor name from cache or fallback
     const tutorName = tutorNameCache[req.tutorId] || req.tutorId;
@@ -183,7 +189,11 @@ async function loadRequestedCourses() {
       <p><strong>Status:</strong> ${statusDisplay}</p>
     `;
     requestedList.appendChild(div);
-  });
+  }
+
+  if (!hasVisibleRequest) {
+    requestedList.innerHTML = "<p>No requests sent yet.</p>";
+  }
 }
 
 function convertTo12Hour(timeStr) {

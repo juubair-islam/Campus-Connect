@@ -79,7 +79,7 @@ onAuthStateChanged(auth, async (user) => {
 tutorForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const location = locationInput.value.trim(); 
+  const location = locationInput.value.trim();
   const course = courseInput.value.trim();
   const days = Array.from(daysInputs).filter(cb => cb.checked).map(cb => cb.value);
   const startTime = startTimeInput.value;
@@ -101,7 +101,6 @@ tutorForm.addEventListener("submit", async (e) => {
 
   try {
     if (editingPostId) {
-      // Update existing post
       const postRef = doc(db, "tutorPosts", editingPostId);
       await updateDoc(postRef, { days, startTime, endTime, description, location });
       messageBox.textContent = "✅ Post updated successfully.";
@@ -109,7 +108,6 @@ tutorForm.addEventListener("submit", async (e) => {
       postButton.textContent = "Post";
       courseInput.disabled = false;
     } else {
-      // Create new post
       await addDoc(collection(db, "tutorPosts"), {
         uid: currentUID,
         name: studentData.name || "Unknown",
@@ -167,7 +165,6 @@ async function loadTutorPosts() {
       <p><strong>Time:</strong> ${formatTime(post.startTime)} - ${formatTime(post.endTime)}</p>
       <p><strong>Location:</strong> ${post.location || "Not specified"}</p>
       <p><strong>Description:</strong> ${post.description || "None"}</p>
-
       <div class="action-buttons">
         <button class="btn edit-btn" data-id="${postId}" data-course="${post.course}">✏ Edit</button>
         <button class="btn delete-btn" data-id="${postId}">🗑 Delete</button>
@@ -177,19 +174,13 @@ async function loadTutorPosts() {
     tutorPostList.appendChild(div);
   });
 
-  // Edit Listener
-  document.querySelectorAll(".edit-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const postId = btn.dataset.id;
-      const course = btn.dataset.course;
-      startEditPost(postId, course);
-    });
-  });
+  document.querySelectorAll(".edit-btn").forEach(btn =>
+    btn.addEventListener("click", () => startEditPost(btn.dataset.id, btn.dataset.course))
+  );
 
-  // Delete Listener
-  document.querySelectorAll(".delete-btn").forEach(btn => {
-    btn.addEventListener("click", () => deleteTutorPost(btn.dataset.id));
-  });
+  document.querySelectorAll(".delete-btn").forEach(btn =>
+    btn.addEventListener("click", () => deleteTutorPost(btn.dataset.id))
+  );
 }
 
 // Start Edit
@@ -219,12 +210,13 @@ async function deleteTutorPost(postId) {
     await deleteDoc(doc(db, "tutorPosts", postId));
     await loadTutorPosts();
 
-    // Show delete message after reload
     const msg = document.createElement("p");
     msg.className = "delete-msg";
     msg.textContent = "🗑️ Post deleted successfully.";
     tutorPostList.prepend(msg);
     setTimeout(() => msg.remove(), 3000);
+
+    loadLearnerRequests(); // Refresh requests after deletion
   }
 }
 
@@ -270,33 +262,46 @@ function formatTime(timeStr) {
   return `${hour12}:${minute.toString().padStart(2, "0")} ${ampm}`;
 }
 
-// Load Learner Requests Sent to This Tutor
+// Load Learner Requests Sent to This Tutor (Only for Existing Courses)
 async function loadLearnerRequests() {
   if (!learnerRequestsContainer) return;
 
-  const q = query(collection(db, "tutorRequests"), where("tutorId", "==", currentUID));
-  const snapshot = await getDocs(q);
-
   learnerRequestsContainer.innerHTML = "";
 
-  if (snapshot.empty) {
+  // Get existing courses posted by the tutor
+  const tutorPostsSnap = await getDocs(query(collection(db, "tutorPosts"), where("uid", "==", currentUID)));
+  const existingCourses = new Set();
+  tutorPostsSnap.forEach(doc => existingCourses.add(doc.data().course));
+
+  const requestsSnap = await getDocs(query(collection(db, "tutorRequests"), where("tutorId", "==", currentUID)));
+
+  if (requestsSnap.empty) {
     learnerRequestsContainer.innerHTML = "<p>No requests found.</p>";
     return;
   }
 
-  for (const docSnap of snapshot.docs) {
+  let shownAny = false;
+
+  for (const docSnap of requestsSnap.docs) {
     const request = docSnap.data();
     const requestId = docSnap.id;
 
-    // Get learner name
+    // Skip if course was deleted
+    if (!existingCourses.has(request.course)) continue;
+
+    shownAny = true;
+
     const learnerRef = doc(db, "students", request.learnerId);
     const learnerSnap = await getDoc(learnerRef);
     const learnerName = learnerSnap.exists() ? learnerSnap.data().name : "Unknown";
 
-    // Construct status and buttons
-    let statusHtml = `<p><strong>Status:</strong> ${request.status || "Pending"}</p>`;
+    // Normalize status and display nicely
+    const normalizedStatus = (request.status || "pending").toLowerCase();
+    const displayStatus = normalizedStatus.charAt(0).toUpperCase() + normalizedStatus.slice(1);
+
+    let statusHtml = `<p><strong>Status:</strong> ${displayStatus}</p>`;
     let buttonsHtml = "";
-    if (request.status === "Pending" || !request.status) {
+    if (normalizedStatus === "pending") {
       buttonsHtml = `
         <button class="btn accept-btn" data-id="${requestId}">✅ Accept</button>
         <button class="btn reject-btn" data-id="${requestId}">❌ Reject</button>
@@ -310,14 +315,15 @@ async function loadLearnerRequests() {
       <p><strong>Course:</strong> ${request.course}</p>
       <p><strong>Message:</strong> ${request.message || "No additional message"}</p>
       ${statusHtml}
-      <div class="action-buttons">
-        ${buttonsHtml}
-      </div>
+      <div class="action-buttons">${buttonsHtml}</div>
     `;
     learnerRequestsContainer.appendChild(card);
   }
 
-  // Add event listeners for Accept/Reject
+  if (!shownAny) {
+    learnerRequestsContainer.innerHTML = "<p>No active requests for existing courses.</p>";
+  }
+
   document.querySelectorAll(".accept-btn").forEach(btn =>
     btn.addEventListener("click", () => updateRequestStatus(btn.dataset.id, "Accepted"))
   );
@@ -326,34 +332,38 @@ async function loadLearnerRequests() {
   );
 }
 
-// Update Request Status (Accept/Reject) and notify learner
+// Update Request Status and Notify Learner
 async function updateRequestStatus(requestId, status) {
-  const ref = doc(db, "tutorRequests", requestId);
-  
-  // Get current request data for learnerId
-  const requestSnap = await getDoc(ref);
-  if (!requestSnap.exists()) {
-    alert("Request not found!");
-    return;
+  try {
+    const requestRef = doc(db, "tutorRequests", requestId);
+    await updateDoc(requestRef, { status });
+
+    // Notify learner about acceptance/rejection
+    const requestSnap = await getDoc(requestRef);
+    if (!requestSnap.exists()) return;
+
+    const requestData = requestSnap.data();
+    const learnerId = requestData.learnerId;
+
+    // Add notification for learner
+    await addDoc(collection(db, "notifications"), {
+      uid: learnerId,
+      message: `Your tutoring request for ${requestData.course} has been ${status.toLowerCase()}.`,
+      timestamp: new Date(),
+      read: false
+    });
+
+    loadLearnerRequests();
+  } catch (err) {
+    console.error("Failed to update request status:", err);
   }
-  const requestData = requestSnap.data();
-
-  // Update status and add a notification message for learner
-  await updateDoc(ref, { 
-    status,
-    learnerNotificationMessage: `Your request for course "${requestData.course}" has been ${status.toLowerCase()} by the tutor.`,
-    learnerNotifiedAt: new Date()
-  });
-
-  loadLearnerRequests();
-  showNewRequestNotification(`Request ${status}.`);
 }
 
-// Add New Request Notification (for tutor)
-function showNewRequestNotification(message) {
-  const div = document.createElement("div");
-  div.className = "notification-card highlight";
-  div.innerHTML = `<p>🔔 ${message}</p>`;
-  notificationBox.prepend(div);
-  setTimeout(() => div.remove(), 3000);
+// Logout Button Handler
+const logoutBtn = document.getElementById("logoutBtn");
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", async () => {
+    await signOut(auth);
+    window.location.href = "/login.html";
+  });
 }

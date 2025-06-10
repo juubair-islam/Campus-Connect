@@ -602,3 +602,40 @@ input, select, button {
   background: #f8f9fa;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
+
+
+.action-buttons {
+  margin-top: 10px;
+}
+/* Accept Button (Light Green) */
+.accept-btn {
+  background-color: #90ee90;
+  color: #000;
+  border: none;
+  padding: 4px 8px;
+  margin-right: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.accept-btn:hover {
+  background-color: #218838;
+}
+
+/* Reject Button (Light Red) */
+.reject-btn {
+  background-color: #f08080;
+  color: #000;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.reject-btn:hover {
+  background-color: #c82333;
+}
