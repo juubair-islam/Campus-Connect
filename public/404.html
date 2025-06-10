@@ -2,68 +2,104 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>404 - Page Not Found</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>404 Not Found | Campus Connect</title>
   <style>
-    body {
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    }
+
+    body {
       height: 100vh;
-      color: #2e3a59;
-    }
-
-    .container {
+      background: linear-gradient(to right, #e6f3ff, #f0f8ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
       text-align: center;
-      padding: 40px;
+      padding: 2rem;
+    }
+
+    .error-container {
+      max-width: 600px;
       background: white;
-      border-radius: 10px;
+      padding: 40px;
+      border-radius: 20px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      max-width: 400px;
+      animation: fadeIn 1s ease-in-out;
     }
 
-    .container h1 {
-      font-size: 72px;
-      margin: 0;
-      color: #ff6b6b;
+    .error-code {
+      font-size: 100px;
+      font-weight: 800;
+      color: #0077cc;
+      animation: float 2s ease-in-out infinite;
     }
 
-    .container h2 {
-      margin-top: 10px;
+    .error-message {
       font-size: 24px;
+      color: #333;
+      margin-top: 10px;
     }
 
-    .container p {
+    .error-description {
       font-size: 16px;
-      color: #555;
+      color: #666;
       margin: 20px 0;
     }
 
-    .container a {
+    .btn-home {
       display: inline-block;
-      text-decoration: none;
-      background-color: #007bff;
-      color: white;
       padding: 12px 24px;
-      border-radius: 5px;
-      transition: background 0.3s;
+      background-color: #0077cc;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background 0.3s ease;
     }
 
-    .container a:hover {
-      background-color: #0056b3;
+    .btn-home:hover {
+      background-color: #005fa3;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .error-code {
+        font-size: 72px;
+      }
+
+      .error-message {
+        font-size: 20px;
+      }
+
+      .error-description {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>404</h1>
-    <h2>Oops! Page not found</h2>
-    <p>The page you're looking for doesn't exist or has been moved.</p>
-    <a href="/">Go Back Home</a>
+  <div class="error-container">
+    <div class="error-code">404</div>
+    <div class="error-message">Oops! <br>Campus Connection Failed</div>
+    <div class="error-description">
+      Looks like you've taken a wrong turn inside Campus Connect.<br>
+      The page you’re looking for is under Construction.
+    </div>
   </div>
 </body>
 </html>

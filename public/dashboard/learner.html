@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Campus Connect - Learner Section</title>
+  <link rel="stylesheet" href="../css/tutor.css" />
+
+  <style>
+    /* 👇 Optional: Improve visual clarity for request statuses */
+    .notification-card {
+      border: 1px solid #ddd;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      background-color: #f9f9f9;
+    }
+
+    .success-msg {
+      border-left: 5px solid green;
+      background-color: #e8ffe8;
+    }
+
+    .status-pending {
+      color: gray;
+      font-weight: bold;
+    }
+
+    .status-accepted {
+      color: green;
+      font-weight: bold;
+    }
+
+    .status-rejected {
+      color: red;
+      font-weight: bold;
+    }
+
+    .tutor-post {
+      border-left: 5px solid #007bff;
+    }
+
+    .send-request-btn {
+      margin-top: 10px;
+      padding: 6px 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .send-request-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="../dashboard/student.html" class="logo-title">
+      <img src="../images/logo.png" alt="Campus Connect Logo" class="logo" />
+      <div class="header-text">
+        <h1>Campus Connect</h1>
+        <p class="tagline">Bridge to Your IUB Community</p>
+      </div>
+    </a>
+    <div class="user-info">
+      <span id="studentNameHeader">Loading...</span>
+      <a href="../dashboard/student.html" class="back-button">Back</a>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <section class="welcome-section">
+      <h2>📚 Learner Panel</h2>
+      <p>Find and connect with available tutors</p>
+    </section>
+
+    <div class="container">
+      <h3>Available Tutors</h3>
+      <div id="tutorList"></div>
+
+      <h3>Requested Course Details</h3>
+      <div id="requestedList"></div>
+    </div>
+  </main>
+
+  <script type="module" src="../js/dashboard/learner.js"></script>
+</body>
+</html>

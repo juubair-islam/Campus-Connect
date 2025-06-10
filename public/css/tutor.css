@@ -282,16 +282,264 @@ body {
 
 
 
-.notification-area {
-  background-color: #fefce8;
-  border-left: 4px solid #facc15;
-  padding: 1rem;
-  border-radius: 10px;
-  margin-bottom: 2rem;
-}
+
 .notification {
   margin-bottom: 0.75rem;
   font-size: 0.95rem;
+}
+
+
+    /* Form styling */
+    .form-section {
+      background: #f0f9ff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    .form-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .form-card input,
+    .form-card textarea,
+    .form-card button {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .form-card label {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .checkbox-group label {
+      font-weight: normal;
+    }
+
+    .item-card {
+      background: #fff;
+      padding: 15px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .item-card button {
+      margin-right: 10px;
+      padding: 5px 10px;
+    }
+  
+
+    .checkbox-group {
+  margin: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #f1f1f1;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4faff;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 700px;
+  margin: auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  margin-top: 2rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+input, select, button {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.post-btn, .edit-btn, .delete-btn, .save-btn {
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.post-btn {
+  background: #2196f3;
+}
+
+.edit-btn {
+  background: #ffc107;
+}
+
+.save-btn {
+  background: #4caf50;
+}
+
+.delete-btn {
+  background: #f44336;
+}
+
+.post-btn:hover {
+  background: #1976d2;
+}
+
+.edit-btn:hover {
+  background: #e0a800;
+}
+
+.save-btn:hover {
+  background: #388e3c;
+}
+
+.delete-btn:hover {
+  background: #d32f2f;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.checkbox-group label {
+  background: #e8f0fe;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.tutor-post {
+  background: #e3f2fd;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  position: relative;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.tutor-post input {
+  width: 100%;
+  margin: 6px 0;
+}
+
+.success-msg {
+  color: green;
+  font-weight: bold;
+  margin-top: 10px;
+  display: inherit;
+}
+/* Notification card style */
+.notification-card, .tutor-post {
+  background-color: #f0f8ff;
+  border-left: 5px solid #00aaff;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+
+/* Editable fields */
+.editable {
+  width: 100%;
+  padding: 5px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Buttons */
+.btn {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  margin-right: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn:hover {
+  background-color: #0056b3;
+}
+
+/* Action message */
+.action-message {
+  color: green;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* Success message on delete */
+.success-msg {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 8px;
+  border-left: 5px solid green;
+  margin-bottom: 10px;
+  border-radius: 5px;
+ 
+}
+
+/* Back Button */
+.back-button {
+  background-color: #0077b6;
+  color: white;
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+}
+
+.success-msg {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.5s ease-in;
+}
+
+.success-msg.hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.delete-msg {
+  background-color: #f8d7da;   /* light red */
+  color: #721c24;              /* dark red text */
+  padding: 8px;
+  border-left: 5px solid #dc3545;  /* bootstrap red */
+  margin-bottom: 10px;
+  border-radius: 5px;
 }
 
 
@@ -340,4 +588,17 @@ body {
   border-left: 5px solid green;
   border-radius: 5px;
   margin-top: 8px;
+}
+
+
+.notification-card.highlight {
+  background-color: #e0f7fa;
+  border-left: 4px solid #00796b;
+}
+.dynamic-list .notification-card {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background: #f8f9fa;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }

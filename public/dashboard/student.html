@@ -8,15 +8,22 @@
   <link rel="stylesheet" href="../css/student.css" />
 </head>
 <body>
-
-  <!-- Header with real-time student name + logout -->
-  <header class="dashboard-header">
-    <h1>Campus Connect - Student Portal</h1>
+  <header class="header">
+    <a href="../dashboard/student.html" class="logo-title">
+      <img src="../images/logo.png" alt="Campus Connect Logo" class="logo" />
+      <div class="header-text">
+        <h1>Campus Connect</h1>
+        <p class="tagline">Bridge to Your IUB Community</p>
+      </div>
+    </a>
     <div class="user-info">
       <span id="studentNameHeader">Loading...</span>
       <button id="logoutBtn">Logout</button>
     </div>
   </header>
+
+
+
 
   <!-- Main -->
   <main class="dashboard-main">
@@ -32,17 +39,23 @@
       </p>
     </section>
 
+    
+    <!-- Notification Area -->
+    <section id="notificationBox" class="notification-area">
+      <!-- Filled dynamically by JS -->
+    </section>
+    
     <!-- Navigation Cards -->
     <div class="card-grid">
       <div class="dashboard-card tutor-card">
         <h3>Tutor Section</h3>
         <p>Manage availability, respond to learners.</p>
-        <a href="/dashboard/tutor.html" class="card-button">Go to Tutor</a>
+        <a href="../dashboard/tutor.html" class="card-button">Go to Tutor</a>
       </div>
       <div class="dashboard-card learner-card">
         <h3>Learner Section</h3>
         <p>Find tutors and request sessions.</p>
-        <a href="/dashboard/learner.html" class="card-button">Go to Learner</a>
+        <a href="../dashboard/learner.html" class="card-button">Go to Learner</a>
       </div>
       <div class="dashboard-card lostfound-card">
         <h3>Lost & Found</h3>
@@ -51,10 +64,6 @@
       </div>
     </div>
 
-    <!-- Notification Area -->
-    <section id="notificationBox" class="notification-area">
-      <!-- Filled dynamically by JS -->
-    </section>
 
     <!-- Lost & Found Items -->
     <section>
