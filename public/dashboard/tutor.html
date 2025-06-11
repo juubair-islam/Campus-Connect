@@ -18,8 +18,6 @@
     <div class="user-info">
       <span id="studentNameHeader">Loading...</span>
       <a href="../dashboard/student.html" class="back-button">Back</a>
-
-
     </div>
   </header>
 
@@ -31,7 +29,6 @@
 
     <section class="notification-area" id="notificationBox"></section>
 
-
     <!-- Learner Requests Section -->
     <section>
       <h3 class="section-title">📨 Learner Requests</h3>
@@ -41,33 +38,29 @@
     <div class="container">
       <h2>📌 Post Your Availability</h2>
       <form id="tutorForm">
-      <input type="text" id="course" placeholder="Course Name" required />
-      <input type="text" id="location" placeholder="Location" required />
-      <div id="dayCheckboxes" class="checkbox-group">
-        <label><input type="checkbox" name="availableDays" value="Sunday" /> Sunday</label>
-        <label><input type="checkbox" name="availableDays" value="Monday" /> Monday</label>
-        <label><input type="checkbox" name="availableDays" value="Tuesday" /> Tuesday</label>
-        <label><input type="checkbox" name="availableDays" value="Wednesday" /> Wednesday</label>
-        <label><input type="checkbox" name="availableDays" value="Thursday" /> Thursday</label>
-      </div>
-      <input type="time" id="startTime" required />
-      <input type="time" id="endTime" required />
-      <textarea id="description" placeholder="Description (optional)"></textarea>
+        <input type="text" id="course" placeholder="Course Name" required />
+        <input type="text" id="location" placeholder="Location" required />
+        <div id="dayCheckboxes" class="checkbox-group">
+          <label><input type="checkbox" name="availableDays" value="Sunday" /> Sunday</label>
+          <label><input type="checkbox" name="availableDays" value="Monday" /> Monday</label>
+          <label><input type="checkbox" name="availableDays" value="Tuesday" /> Tuesday</label>
+          <label><input type="checkbox" name="availableDays" value="Wednesday" /> Wednesday</label>
+          <label><input type="checkbox" name="availableDays" value="Thursday" /> Thursday</label>
+        </div>
+        <input type="time" id="startTime" required />
+        <input type="time" id="endTime" required />
+        <textarea id="description" placeholder="Description (optional)"></textarea>
 
-      <button type="submit" class="post-btn" id="submitBtn">Post Availability</button>
-    </form>
+        <button type="submit" class="post-btn" id="submitBtn">Post Availability</button>
+      </form>
 
       <div id="messageBox" class="success-msg"></div>
 
       <h3>Your Tutoring Posts</h3>
-      <div id="tutorPostList"></div>
+      <div id="tutorPostList">
+        <!-- Posts will be dynamically inserted here, with expandable 'details' sections -->
+      </div>
     </div>
-
-
-
-
-
-
   </main>
 
   <script type="module" src="../js/dashboard/tutor.js"></script>

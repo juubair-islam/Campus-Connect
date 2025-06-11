@@ -53,6 +53,22 @@
     .send-request-btn:hover {
       background-color: #0056b3;
     }
+
+
+
+#tutorList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+
+
+      .container h3 {
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 5px;
+    margin-top: 30px;
+  }
   </style>
 </head>
 <body>
@@ -74,14 +90,22 @@
     <section class="welcome-section">
       <h2>📚 Learner Panel</h2>
       <p>Find and connect with available tutors</p>
+      
     </section>
 
     <div class="container">
       <h3>Available Tutors</h3>
-      <div id="tutorList"></div>
+      <div id="tutorList"><p>Loading available tutors...</p></div>
+
 
       <h3>Requested Course Details</h3>
       <div id="requestedList"></div>
+
+      <!-- NEW: Enrolled Courses Section -->
+      <h3>
+        📚 <a href="../dashboard/enrolledCourses.html" style="text-decoration: none; color: #007bff;">View Enrolled Courses</a>
+      </h3>
+
     </div>
   </main>
 

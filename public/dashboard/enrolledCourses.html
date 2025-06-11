@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Enrolled Courses - Campus Connect</title>
+  <link rel="stylesheet" href="../css/tutor.css" />
+  <style>
+    .container {
+      padding: 2rem;
+    }
+
+    .course-card {
+      border: 1px solid #ccc;
+      border-left: 5px solid #28a745;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      background-color: #f5fff5;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="../dashboard/student.html" class="logo-title">
+      <img src="../images/logo.png" alt="Campus Connect Logo" class="logo" />
+      <div class="header-text">
+        <h1>Campus Connect</h1>
+        <p class="tagline">Bridge to Your IUB Community</p>
+      </div>
+    </a>
+    <div class="user-info">
+      <span id="studentNameHeader">Loading...</span>
+      <a href="learner.html" class="back-button">Back</a>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="container">
+      <h2>📚 Enrolled Courses</h2>
+      <div id="enrolledList"><p>Loading enrolled courses...</p></div>
+    </div>
+  </main>
+
+    <script type="module" src="../js/dashboard/enrolledCourses.js"></script>
+
+</body>
+</html>

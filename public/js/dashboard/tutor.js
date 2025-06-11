@@ -40,8 +40,11 @@ const tutorPostList = document.getElementById("tutorPostList");
 const messageBox = document.getElementById("messageBox");
 const notificationBox = document.getElementById("notificationBox");
 const learnerRequestsContainer = document.getElementById("learnerRequests");
+const successBox = document.createElement("div");
+successBox.id = "successBox";
+document.body.appendChild(successBox);
 
-// Fields
+// Form Fields
 const courseInput = document.getElementById("course");
 const daysInputs = document.querySelectorAll('input[name="availableDays"]');
 const startTimeInput = document.getElementById("startTime");
@@ -75,7 +78,7 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-// Submit/Post or Update Form
+// Form Submit
 tutorForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -92,17 +95,15 @@ tutorForm.addEventListener("submit", async (e) => {
   if (!course || days.length === 0 || !startTime || !endTime) {
     messageBox.textContent = "❌ Please fill in all required fields.";
     messageBox.className = "error-msg";
-    setTimeout(() => {
-      messageBox.textContent = "";
-      messageBox.className = "";
-    }, 3000);
+    setTimeout(() => (messageBox.textContent = ""), 3000);
     return;
   }
 
   try {
     if (editingPostId) {
-      const postRef = doc(db, "tutorPosts", editingPostId);
-      await updateDoc(postRef, { days, startTime, endTime, description, location });
+      await updateDoc(doc(db, "tutorPosts", editingPostId), {
+        days, startTime, endTime, description, location
+      });
       messageBox.textContent = "✅ Post updated successfully.";
       editingPostId = null;
       postButton.textContent = "Post";
@@ -124,21 +125,15 @@ tutorForm.addEventListener("submit", async (e) => {
     }
 
     messageBox.className = "success-msg";
-    setTimeout(() => {
-      messageBox.textContent = "";
-      messageBox.className = "";
-    }, 3000);
+    setTimeout(() => (messageBox.textContent = ""), 3000);
 
     tutorForm.reset();
     loadTutorPosts();
   } catch (err) {
     console.error("Error:", err);
-    messageBox.textContent = "❌ Error while processing. Try again.";
+    messageBox.textContent = "❌ Error while processing.";
     messageBox.className = "error-msg";
-    setTimeout(() => {
-      messageBox.textContent = "";
-      messageBox.className = "";
-    }, 3000);
+    setTimeout(() => (messageBox.textContent = ""), 3000);
   }
 });
 
@@ -153,44 +148,92 @@ async function loadTutorPosts() {
     return;
   }
 
-  snapshot.forEach(docSnap => {
+  for (const docSnap of snapshot.docs) {
     const post = docSnap.data();
     const postId = docSnap.id;
+    const course = post.course;
+
+    const enrollSnap = await getDocs(query(
+      collection(db, "courseEnrollments"),
+      where("tutorId", "==", currentUID),
+      where("course", "==", course)
+    ));
+
+    let enrolledHTML = "";
+    if (!enrollSnap.empty) {
+      enrolledHTML += `
+        <table class="enrolled-table">
+          <thead>
+            <tr><th>Name</th><th>ID</th><th>Contact</th><th>Requested At</th><th>Actions</th></tr>
+          </thead><tbody>`;
+      enrollSnap.forEach(enr => {
+        const d = enr.data();
+        enrolledHTML += `
+          <tr>
+            <td>${d.learnerName}</td>
+            <td>${d.iubId}</td>
+            <td>${d.contact}</td>
+            <td>${new Date(d.requestTime.seconds * 1000).toLocaleString()}</td>
+            <td>
+              <button class="btn chat-btn">💬</button>
+              <button class="btn remove-btn" data-id="${enr.id}">❌</button>
+            </td>
+          </tr>`;
+      });
+      enrolledHTML += `</tbody></table>`;
+    }
 
     const div = document.createElement("div");
     div.className = "notification-card tutor-post";
     div.innerHTML = `
-      <p><strong>Course:</strong> ${post.course}</p>
+      <p><strong>Course:</strong> ${course}</p>
       <p><strong>Days:</strong> ${post.days.join(", ")}</p>
       <p><strong>Time:</strong> ${formatTime(post.startTime)} - ${formatTime(post.endTime)}</p>
       <p><strong>Location:</strong> ${post.location || "Not specified"}</p>
       <p><strong>Description:</strong> ${post.description || "None"}</p>
+
+      <button class="btn toggle-details">📂 Course Details (${enrollSnap.size})</button>
+      <div class="course-details" style="display:none;">
+        ${enrolledHTML || "<p>No enrolled learners yet.</p>"}
+      </div>
+
       <div class="action-buttons">
-        <button class="btn edit-btn" data-id="${postId}" data-course="${post.course}">✏ Edit</button>
+        <button class="btn edit-btn" data-id="${postId}" data-course="${course}">✏ Edit</button>
         <button class="btn delete-btn" data-id="${postId}">🗑 Delete</button>
       </div>
     `;
 
     tutorPostList.appendChild(div);
-  });
+  }
 
   document.querySelectorAll(".edit-btn").forEach(btn =>
     btn.addEventListener("click", () => startEditPost(btn.dataset.id, btn.dataset.course))
   );
-
   document.querySelectorAll(".delete-btn").forEach(btn =>
     btn.addEventListener("click", () => deleteTutorPost(btn.dataset.id))
   );
+  document.querySelectorAll(".toggle-details").forEach(btn =>
+    btn.addEventListener("click", () => {
+      const box = btn.nextElementSibling;
+      box.style.display = box.style.display === "none" ? "block" : "none";
+    })
+  );
+  document.querySelectorAll(".remove-btn").forEach(btn =>
+    btn.addEventListener("click", async () => {
+      await deleteDoc(doc(db, "courseEnrollments", btn.dataset.id));
+      showSuccessMsg("👤 Learner removed.");
+      loadTutorPosts();
+    })
+  );
 }
 
-// Start Edit
+// Edit Post
 async function startEditPost(postId, course) {
   const postRef = doc(db, "tutorPosts", postId);
   const postSnap = await getDoc(postRef);
   if (!postSnap.exists()) return;
 
   const post = postSnap.data();
-
   editingPostId = postId;
   courseInput.value = course;
   courseInput.disabled = true;
@@ -199,130 +242,100 @@ async function startEditPost(postId, course) {
   endTimeInput.value = post.endTime;
   descriptionInput.value = post.description || "";
   locationInput.value = post.location || "";
-
   postButton.textContent = "Update";
-  messageBox.textContent = "📝 Editing mode enabled.";
+  messageBox.textContent = "📝 Editing mode.";
 }
 
 // Delete Post
 async function deleteTutorPost(postId) {
-  if (confirm("Are you sure you want to delete this post?")) {
+  if (confirm("Delete this post?")) {
     await deleteDoc(doc(db, "tutorPosts", postId));
-    await loadTutorPosts();
-
-    const msg = document.createElement("p");
-    msg.className = "delete-msg";
-    msg.textContent = "🗑️ Post deleted successfully.";
-    tutorPostList.prepend(msg);
-    setTimeout(() => msg.remove(), 3000);
-
-    loadLearnerRequests(); // Refresh requests after deletion
+    showSuccessMsg("🗑️ Post deleted.");
+    loadTutorPosts();
+    loadLearnerRequests();
   }
 }
 
-// Show Notifications
+// Notifications
 function showNotifications(name) {
   const today = new Date();
   const weekday = today.toLocaleString("en-US", { weekday: "long" });
 
   notificationBox.innerHTML = `
     <div class="notification-card">
-      <p>📢 Hello ${name}, here’s your tutor panel.</p>
+      <p>📢 Hello ${name}, welcome to your tutor panel.</p>
       <p>📅 ${today.toLocaleDateString()}</p>
-      <p>📘 Keep your availability updated to receive tutoring requests.</p>
-    </div>
-  `;
+      <p>📘 Keep your availability updated.</p>
+    </div>`;
 
   checkTodayTuition(weekday);
 }
 
-// Reminder for Today
 async function checkTodayTuition(today) {
   const q = query(collection(db, "tutorPosts"), where("uid", "==", currentUID));
   const snapshot = await getDocs(q);
-
   snapshot.forEach(docSnap => {
     const post = docSnap.data();
     if (post.days.includes(today)) {
       const div = document.createElement("div");
       div.className = "notification-card highlight";
       div.innerHTML = `
-        <p>📌 Reminder: You have tutoring availability today (${today})</p>
-        <p>🕒 ${post.startTime} - ${post.endTime} for ${post.course}</p>
-      `;
+        <p>📌 Reminder: You're available today (${today})</p>
+        <p>🕒 ${post.startTime} - ${post.endTime} for ${post.course}</p>`;
       notificationBox.appendChild(div);
     }
   });
 }
 
 function formatTime(timeStr) {
-  const [hour, minute] = timeStr.split(":").map(Number);
-  const ampm = hour >= 12 ? "PM" : "AM";
-  const hour12 = hour % 12 || 12;
-  return `${hour12}:${minute.toString().padStart(2, "0")} ${ampm}`;
+  const [h, m] = timeStr.split(":").map(Number);
+  const ampm = h >= 12 ? "PM" : "AM";
+  const hour = h % 12 || 12;
+  return `${hour}:${m.toString().padStart(2, "0")} ${ampm}`;
 }
 
-// Load Learner Requests Sent to This Tutor (Only for Existing Courses)
+// Load Requests
 async function loadLearnerRequests() {
   if (!learnerRequestsContainer) return;
-
   learnerRequestsContainer.innerHTML = "";
 
-  // Get existing courses posted by the tutor
-  const tutorPostsSnap = await getDocs(query(collection(db, "tutorPosts"), where("uid", "==", currentUID)));
-  const existingCourses = new Set();
-  tutorPostsSnap.forEach(doc => existingCourses.add(doc.data().course));
+  const tutorCourses = new Set();
+  const postSnap = await getDocs(query(collection(db, "tutorPosts"), where("uid", "==", currentUID)));
+  postSnap.forEach(doc => tutorCourses.add(doc.data().course));
 
-  const requestsSnap = await getDocs(query(collection(db, "tutorRequests"), where("tutorId", "==", currentUID)));
-
-  if (requestsSnap.empty) {
+  const reqSnap = await getDocs(query(collection(db, "tutorRequests"), where("tutorId", "==", currentUID)));
+  if (reqSnap.empty) {
     learnerRequestsContainer.innerHTML = "<p>No requests found.</p>";
     return;
   }
 
   let shownAny = false;
-
-  for (const docSnap of requestsSnap.docs) {
+  for (const docSnap of reqSnap.docs) {
     const request = docSnap.data();
     const requestId = docSnap.id;
-
-    // Skip if course was deleted
-    if (!existingCourses.has(request.course)) continue;
+    if (!tutorCourses.has(request.course)) continue;
+    if (request.status && request.status !== "pending") continue;
 
     shownAny = true;
-
     const learnerRef = doc(db, "students", request.learnerId);
     const learnerSnap = await getDoc(learnerRef);
     const learnerName = learnerSnap.exists() ? learnerSnap.data().name : "Unknown";
-
-    // Normalize status and display nicely
-    const normalizedStatus = (request.status || "pending").toLowerCase();
-    const displayStatus = normalizedStatus.charAt(0).toUpperCase() + normalizedStatus.slice(1);
-
-    let statusHtml = `<p><strong>Status:</strong> ${displayStatus}</p>`;
-    let buttonsHtml = "";
-    if (normalizedStatus === "pending") {
-      buttonsHtml = `
-        <button class="btn accept-btn" data-id="${requestId}">✅ Accept</button>
-        <button class="btn reject-btn" data-id="${requestId}">❌ Reject</button>
-      `;
-    }
 
     const card = document.createElement("div");
     card.className = "notification-card";
     card.innerHTML = `
       <p><strong>From:</strong> ${learnerName}</p>
       <p><strong>Course:</strong> ${request.course}</p>
-      <p><strong>Message:</strong> ${request.message || "No additional message"}</p>
-      ${statusHtml}
-      <div class="action-buttons">${buttonsHtml}</div>
+      <p><strong>Message:</strong> ${request.message || "N/A"}</p>
+      <div class="action-buttons">
+        <button class="btn accept-btn" data-id="${requestId}">✅ Accept</button>
+        <button class="btn reject-btn" data-id="${requestId}">❌ Reject</button>
+      </div>
     `;
     learnerRequestsContainer.appendChild(card);
   }
 
-  if (!shownAny) {
-    learnerRequestsContainer.innerHTML = "<p>No active requests for existing courses.</p>";
-  }
+  if (!shownAny) learnerRequestsContainer.innerHTML = "<p>No active requests.</p>";
 
   document.querySelectorAll(".accept-btn").forEach(btn =>
     btn.addEventListener("click", () => updateRequestStatus(btn.dataset.id, "Accepted"))
@@ -332,38 +345,51 @@ async function loadLearnerRequests() {
   );
 }
 
-// Update Request Status and Notify Learner
+// Accept/Reject + Enroll
 async function updateRequestStatus(requestId, status) {
   try {
-    const requestRef = doc(db, "tutorRequests", requestId);
-    await updateDoc(requestRef, { status });
+    const ref = doc(db, "tutorRequests", requestId);
+    await updateDoc(ref, { status });
 
-    // Notify learner about acceptance/rejection
-    const requestSnap = await getDoc(requestRef);
-    if (!requestSnap.exists()) return;
+    const reqSnap = await getDoc(ref);
+    const req = reqSnap.data();
+    const learnerId = req.learnerId;
 
-    const requestData = requestSnap.data();
-    const learnerId = requestData.learnerId;
-
-    // Add notification for learner
     await addDoc(collection(db, "notifications"), {
       uid: learnerId,
-      message: `Your tutoring request for ${requestData.course} has been ${status.toLowerCase()}.`,
+      message: `Your request for ${req.course} was ${status.toLowerCase()}.`,
       timestamp: new Date(),
       read: false
     });
 
+    if (status === "Accepted") {
+      const learnerSnap = await getDoc(doc(db, "students", learnerId));
+      const data = learnerSnap.data() || {};
+      await addDoc(collection(db, "courseEnrollments"), {
+        tutorId: currentUID,
+        course: req.course,
+        learnerId,
+        learnerName: data.name || "Unknown",
+        iubId: data.iubId || "N/A",
+        contact: data.contact || "N/A",
+        requestTime: req.timestamp || new Date()
+      });
+    }
+
+    showSuccessMsg(`✅ Request ${status.toLowerCase()}!`);
     loadLearnerRequests();
+    loadTutorPosts();
   } catch (err) {
-    console.error("Failed to update request status:", err);
+    console.error("Error updating request:", err);
   }
 }
 
-// Logout Button Handler
-const logoutBtn = document.getElementById("logoutBtn");
-if (logoutBtn) {
-  logoutBtn.addEventListener("click", async () => {
-    await signOut(auth);
-    window.location.href = "/login.html";
-  });
+// Toast
+function showSuccessMsg(text) {
+  successBox.textContent = text;
+  successBox.className = "success-toast";
+  setTimeout(() => {
+    successBox.textContent = "";
+    successBox.className = "";
+  }, 3000);
 }
