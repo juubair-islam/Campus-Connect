@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IUB Student Lookup</title>
+  <link rel="stylesheet" href="../dashboard/studentdetails.css" />
+</head>
+<body>
+  <div class="container">
+    <img src="../images/meta_logo.png" alt="IUB Logo" style="max-width: 120px; display: block; margin: 0 auto 15px;" />
+    <h1>Independent University, Bangladesh</h1>
+    <h2 style="text-align: center; margin-bottom: 30px;">🔍 Student Lookup Portal</h2>
+
+    <div class="search-box">
+      <input type="text" id="studentId" placeholder="Enter Student ID" />
+      <button onclick="lookup()">Search</button>
+    </div>
+
+    <div id="result" class="result-box"></div>
+  </div>
+
+  <footer>
+    Powered by Campus Connect • IUB Student Lookup Tool
+  </footer>
+
+  <script>
+    async function lookup() {
+      const studentId = document.getElementById('studentId').value.trim();
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = 'Loading...';
+
+      if (!studentId) {
+        resultDiv.innerHTML = '<p class="error">Please enter a Student ID.</p>';
+        return;
+      }
+
+      try {
+        const response = await fetch(`https://iras.iub.edu.bd:8079/api/v2/profile/${studentId}/load-student-details`);
+        if (!response.ok) throw new Error("Failed to fetch data");
+
+        const data = await response.json();
+        const student = data.data;
+
+        if (!student || Object.keys(student).length === 0) {
+          resultDiv.innerHTML = '<p class="error">No student found.</p>';
+          return;
+        }
+
+        let html = `<h2>Student Details for: ${student.studentName || studentId}</h2>`;
+        html += `<div class="details-grid">`;
+
+        for (const [key, value] of Object.entries(student)) {
+          const highlight = key.toLowerCase() === 'cgpa' || key.toLowerCase() === 'earnedcredit' ? 'highlight' : '';
+          html += `
+            <div class="details-item ${highlight}">
+              <strong>${formatLabel(key)}:</strong>
+              <span>${value || '-'}</span>
+            </div>`;
+        }
+
+        html += `</div>`;
+        resultDiv.innerHTML = html;
+      } catch (err) {
+        resultDiv.innerHTML = `<p class="error">Error: ${err.message}</p>`;
+      }
+    }
+
+    function formatLabel(key) {
+      return key
+        .replace(/([A-Z])/g, ' $1')
+        .replace(/^./, str => str.toUpperCase())
+        .replace(/Id$/, 'ID');
+    }
+
+    document.getElementById("studentId").addEventListener("keydown", e => {
+      if (e.key === "Enter") lookup();
+    });
+  </script>
+</body>
+</html>

@@ -28,18 +28,29 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+const studentNameHeader = document.getElementById("studentNameHeader");
 const enrolledList = document.getElementById("enrolledList");
+
+let currentUID = null;
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
-    const currentUID = user.uid;
-    await loadEnrolledCourses(currentUID);
+    currentUID = user.uid;
+
+    // Get student name from students collection
+    const studentRef = doc(db, "students", currentUID);
+    const studentSnap = await getDoc(studentRef);
+    if (studentSnap.exists()) {
+      studentNameHeader.textContent = studentSnap.data().name || "Student";
+    }
+
+    await loadEnrolledCourses();
   } else {
     window.location.href = "/login.html";
   }
 });
 
-async function loadEnrolledCourses(currentUID) {
+async function loadEnrolledCourses() {
   enrolledList.innerHTML = "<p>Loading enrolled courses...</p>";
 
   try {
@@ -48,42 +59,44 @@ async function loadEnrolledCourses(currentUID) {
       where("learnerId", "==", currentUID),
       where("status", "==", "accepted")
     );
+
     const snapshot = await getDocs(q);
 
     if (snapshot.empty) {
-      enrolledList.innerHTML = "<p>You have not enrolled in any courses yet.</p>";
+      enrolledList.innerHTML = "<p>No enrolled courses found.</p>";
       return;
     }
 
-    enrolledList.innerHTML = ""; // clear before adding
+    enrolledList.innerHTML = ""; // Clear
 
-    for (const reqDoc of snapshot.docs) {
-      const req = reqDoc.data();
+    for (const docSnap of snapshot.docs) {
+      const req = docSnap.data();
+
+      // Get tutor post details
       const postRef = doc(db, "tutorPosts", req.postId);
       const postSnap = await getDoc(postRef);
-
       if (!postSnap.exists()) continue;
 
       const post = postSnap.data();
-      const tutorName = post.name || "Tutor";
-      const timestamp = req.timestamp ? new Date(req.timestamp.toDate()).toLocaleString() : "Unknown";
 
       const div = document.createElement("div");
-      div.className = "notification-card success-msg";
+      div.className = "course-card";
       div.innerHTML = `
-        <p><strong>Course:</strong> ${req.course}</p>
-        <p><strong>Tutor:</strong> ${tutorName}</p>
+        <h3>${req.course}</h3>
+        <p><strong>Tutor:</strong> ${post.name}</p>
         <p><strong>Location:</strong> ${post.location}</p>
-        <p><strong>Days:</strong> ${post.days.join(", ")}</p>
-        <p><strong>Time:</strong> ${convertTo12Hour(post.startTime)} - ${convertTo12Hour(post.endTime)}</p>
-        <p><strong>Description:</strong> ${post.description || "None"}</p>
-        <p><strong>Accepted On:</strong> ${timestamp}</p>
+        <p><strong>Schedule:</strong> ${post.days.join(", ")} — ${convertTo12Hour(post.startTime)} to ${convertTo12Hour(post.endTime)}</p>
+        <p><strong>Description:</strong> ${post.description || "N/A"}</p>
+        <div class="button-group">
+          <button class="chat-btn">💬 Chat</button>
+          <button class="material-btn">📁 Study Materials</button>
+        </div>
       `;
       enrolledList.appendChild(div);
     }
-  } catch (err) {
-    console.error("Failed to load enrolled courses:", err);
-    enrolledList.innerHTML = "<p>Error loading enrolled courses.</p>";
+  } catch (error) {
+    console.error("Failed to load enrolled courses:", error);
+    enrolledList.innerHTML = "<p>Error loading enrolled courses. Please try again later.</p>";
   }
 }
 
@@ -91,5 +104,6 @@ function convertTo12Hour(timeStr) {
   const [hour, minute] = timeStr.split(":");
   const h = parseInt(hour);
   const suffix = h >= 12 ? "PM" : "AM";
-  return `${((h + 11) % 12 + 1)}:${minute} ${suffix}`;
+  const formatted = `${((h + 11) % 12 + 1)}:${minute} ${suffix}`;
+  return formatted;
 }

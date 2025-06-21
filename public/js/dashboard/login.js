@@ -103,7 +103,7 @@ loginForm.addEventListener("submit", async (e) => {
           break;
         case "Faculty":
         case "Faculty/Admin":
-          window.location.href = `dashboard/faculty.html?uid=${user.uid}`;
+          window.location.href = `dashboard/admin.html?uid=${user.uid}`;
           break;
         case "Admin":
           window.location.href = `dashboard/admin.html?uid=${user.uid}`;

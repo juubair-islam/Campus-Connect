@@ -1,0 +1,163 @@
+* { box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background:#f4f4f4;
+  padding:20px;
+}
+header {
+  background:#87CEEB;
+  color:black;
+  padding:20px;
+  border-radius:10px;
+  text-align:center;
+}
+header img { height:50px; vertical-align:middle; margin-right:10px; }
+header h1 { display:inline; font-size:24px; }
+header h2 {
+  font-size:16px;
+  margin-top:5px;
+  color:#f5f5dc;
+}
+
+.container {
+  max-width:1100px;
+  margin:30px auto;
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 2px 12px rgba(0,0,0,0.1);
+  animation:fadeIn .5s ease;
+}
+@keyframes fadeIn {
+  from { opacity:0; transform:translateY(20px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.actions {
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:20px;
+}
+.actions button, .actions input[type="text"] {
+  padding:10px 15px;
+  border-radius:6px;
+  border:1px solid #ccc;
+  font-size:16px;
+}
+/* Changed action buttons colors to match Campus Connect teal-blue */
+.actions button {
+  background:#0077b6; /* Campus Connect blue */
+  color:white;
+  cursor:pointer;
+  border:none;
+  transition: background 0.3s ease;
+}
+.actions button:hover {
+  background:#023e8a; /* Darker blue on hover */
+}
+
+table {
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+}
+table th, td {
+  padding:12px;
+  border:1px solid #ddd;
+  text-align:center;
+}
+/* Changed table header to Campus Connect style teal/dark blue */
+table th {
+  background:#0077b6;
+  color:white;
+}
+
+/* Changed buttons inside table to Campus Connect colors */
+.status-btn, .details-btn {
+  padding:6px 12px;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+  color:white;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+.status-btn { background:#0096c7; } /* lighter blue */
+.status-btn:hover { background:#0077b6; }
+.details-btn { background:#023e8a; } /* dark blue */
+.details-btn:hover { background:#001f3f; }
+
+.popup-overlay {
+  display:none;
+  position:fixed;
+  top:0; left:0; right:0; bottom:0;
+  background:rgba(0,0,0,0.6);
+  justify-content:center;
+  align-items:center;
+  z-index:1000;
+}
+.popup {
+  background:white;
+  padding:20px;
+  width:320px;
+  border-radius:10px;
+  position:relative;
+}
+.popup input, .popup button {
+  width:100%;
+  margin-top:10px;
+  padding:10px;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+/* Popup submit button teal-blue */
+.popup button {
+  background:#0077b6;
+  color:white;
+  border:none;
+  transition: background 0.3s ease;
+}
+.popup button:hover {
+  background:#023e8a;
+}
+.close-btn {
+  position:absolute;
+  top:10px;
+  right:10px;
+  font-size:22px;
+  background:transparent;
+  color:#555;
+  border:none;
+  cursor:pointer;
+}
+
+.form-group { margin-bottom:15px; }
+.form-group label { font-weight:bold; }
+.form-group input, .form-group textarea {
+  width:100%;
+  padding:10px;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+
+.submit-btn, .back-btn {
+  padding:12px 20px;
+  background:#0077b6;
+  color:white;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  margin-top:10px;
+  transition: background 0.3s ease;
+}
+.back-btn { background:#0096c7; margin-bottom:20px; }
+.submit-btn:hover, .back-btn:hover { background:#023e8a; }
+
+.picture-preview {
+  width:200px;
+  height:200px;
+  object-fit:cover;
+  border-radius:5px;
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Campus Connect - Admin Panel</title>
+  <link rel="stylesheet" href="../css/student.css" />
+</head>
+<body>
+  <header class="header">
+    <a href="#" class="logo-title">
+      <img src="../images/logo.png" alt="Campus Connect Logo" class="logo" />
+      <div class="header-text">
+        <h1>Campus Connect - Admin</h1>
+        <p class="tagline">Manage & Monitor Campus Resources</p>
+      </div>
+    </a>
+    <div class="user-info">
+      <span id="adminNameHeader">Loading...</span>
+      <button id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <section class="welcome-section">
+      <h2>Welcome, <span id="adminName">Loading...</span>!</h2>
+      <p>You're logged in as <strong>Admin</strong>.</p>
+    </section>
+
+    <div class="card-grid">
+      <div class="dashboard-card lostfound-card">
+        <h3>Lost & Found Panel</h3>
+        <p>Verify and manage lost item submissions.</p>
+        <a href="../dashboard/lost&found copy.html" class="card-button">Go to Lost & Found</a>
+      </div>
+
+      <div class="dashboard-card lookup-card">
+        <h3>Student Details Lookup</h3>
+        <p>Search and verify IUB student profiles.</p>
+        <a href="../dashboard/studentdetails copy.html" class="card-button">Go to Lookup</a>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="../js/dashboard/admin.js"></script>
+</body>
+</html>

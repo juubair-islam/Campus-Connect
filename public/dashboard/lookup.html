@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IUB Student Details Lookup</title>
+  <link rel="stylesheet" href="css/lookup.css" />
+</head>
+<body>
+  <div class="container">
+    <img src="meta_logo.png" alt="IUB Logo" style="max-width: 120px; display: block; margin: 0 auto 15px;" />
+    <h1>Independent University, Bangladesh</h1>
+    <h1 style="text-align: center; margin-bottom: 20px;">Student Details Lookup</h1>
+
+    <div class="search-box">
+      <input id="studentId" type="text" placeholder="Enter Student ID" />
+      <button onclick="lookup()">Search</button>
+    </div>
+    <div id="result" class="result-box"></div>
+  </div>
+
+  <script src="../js/dashboard/lookup.js"></script>
+</body>
+</html>

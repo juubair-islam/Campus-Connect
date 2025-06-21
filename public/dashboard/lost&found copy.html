@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Campus Connect - Lost & Found</title>
+  <link rel="stylesheet" href="../css/tutor.css" />
+  <link rel="stylesheet" href="../css/lost&found.css" />
+</head>
+<body>
+  <header class="header">
+    <a href="../dashboard/student.html" class="logo-title">
+      <img src="../images/logo.png" alt="Campus Connect Logo" class="logo" />
+      <div class="header-text">
+        <h1>Campus Connect</h1>
+        <p class="tagline">Bridge to Your IUB Community</p>
+      </div>
+    </a>
+    <div class="user-info">
+      <span id="studentNameHeader">Loading...</span>
+      <a href="../dashboard/admin.html" class="back-button">Back</a>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+
+    <section class="welcome-section">
+      <h2>📦 Lost & Found</h2>
+      <p>Report lost items and view verified lost & found items on campus.</p>
+    </section>
+
+    <!-- Notifications if any -->
+    <section class="notification-area" id="notificationBox"></section>
+
+    <!-- Page 1: View Lost & Found Items -->
+    <div class="container" id="page1">
+      <div class="actions" style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; margin-bottom: 1rem;">
+        <button id="addBtn" class="post-btn">Add Lost Found Item</button>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+          <input type="text" id="searchBox" placeholder="Search by Item Name" />
+          <button id="searchBtn" class="post-btn">Search</button>
+          <button id="excelBtn" class="post-btn">Export to Excel</button>
+          <button id="pdfBtn" class="post-btn">Export to PDF</button>
+        </div>
+      </div>
+
+      <table id="itemsTable" class="styled-table">
+        <thead>
+          <tr>
+            <th>SL</th>
+            <th>Date</th>
+            <th>Item Name</th>
+            <th>Description</th>
+            <th>Picture</th>
+            <th>Found Place</th>
+            <th>Found By</th>
+            <th>Collected By</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Page 2: Add Lost Found Item -->
+    <div class="container" id="page2" style="display:none;">
+      <button class="back-btn" id="backBtn">← Back to List</button>
+      <h2>Add Lost Found Item</h2>
+
+      <div class="form-group">
+        <label for="newSL">SL Number</label>
+        <input type="text" id="newSL" disabled />
+      </div>
+      <div class="form-group">
+        <label for="newDate">Date</label>
+        <input type="text" id="newDate" disabled />
+      </div>
+      <div class="form-group">
+        <label for="itemName">Item Name</label>
+        <input type="text" id="itemName" />
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="imageUpload">Upload Image</label>
+        <input type="file" id="imageUpload" accept="image/*" />
+      </div>
+      <div class="form-group">
+        <label for="foundPlace">Found Place</label>
+        <input type="text" id="foundPlace" />
+      </div>
+      <div class="form-group">
+        <label for="founderName">Found By Name</label>
+        <input type="text" id="founderName" />
+      </div>
+      <div class="form-group">
+        <label for="founderID">Found By ID</label>
+        <input type="text" id="founderID" />
+      </div>
+      <div class="form-group">
+        <label for="founderContact">Found By Contact</label>
+        <input type="text" id="founderContact" />
+      </div>
+
+      <button class="submit-btn post-btn" id="submitItem">Submit</button>
+    </div>
+
+    <!-- Popup for Collected By -->
+    <div class="popup-overlay" id="popup" style="display:none;">
+      <div class="popup">
+        <button class="close-btn" id="closePopup">×</button>
+        <h3>Collected By</h3>
+        <input type="text" id="collectedName" placeholder="Name" />
+        <input type="text" id="collectedID" placeholder="ID" />
+        <input type="text" id="collectedContact" placeholder="Contact" />
+        <button id="submitCollection" class="post-btn">Submit</button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- External Libraries -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <!-- Your Lost & Found Script -->
+  <script type="module" src="../js/dashboard/lost&found.js"></script>
+</body>
+</html>
